@@ -74,7 +74,7 @@
       "cacheVariables": {
         "CMAKE_OSX_DEPLOYMENT_TARGET": {
           "type": "STRING",
-          "value": "10.16"
+          "value": "11.0"
         }
       },
       "condition": {
