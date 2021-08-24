@@ -54,12 +54,27 @@
       }
     },
     {
-      "name": "macos-base",
+      "name": "macos-base-x64",
       "hidden": true,
       "cacheVariables": {
         "CMAKE_OSX_DEPLOYMENT_TARGET": {
           "type": "STRING",
           "value": "10.14"
+        }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    },
+    {
+      "name": "macos-base-arm64",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_OSX_DEPLOYMENT_TARGET": {
+          "type": "STRING",
+          "value": "10.16"
         }
       },
       "condition": {
@@ -120,12 +135,27 @@
       "hidden": true,
       "inherits": [
         "vcpkg-base",
-        "macos-base"
+        "macos-base-x64"
       ],
       "cacheVariables": {
         "VCPKG_TARGET_TRIPLET": {
           "type": "STRING",
           "value": "x64-osx-10_14"
+        },
+        "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/vcpkg_triplets"
+      }
+    },
+    {
+      "name": "vcpkg-macos-arm64",
+      "hidden": true,
+      "inherits": [
+        "vcpkg-base",
+        "macos-base-arm64"
+      ],
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": {
+          "type": "STRING",
+          "value": "arm64-osx"
         },
         "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/vcpkg_triplets"
       }
@@ -147,6 +177,16 @@
       "inherits": [
         "ninja-base",
         "vcpkg-macos-x64",
+        "release-base"
+      ]
+    },
+    {
+      "name": "macos-default-arm64",
+      "displayName": "Default macOS Release build",
+      "description": "Release build for macOS using Ninja and vcpkg",
+      "inherits": [
+        "ninja-base",
+        "vcpkg-macos-arm64",
         "release-base"
       ]
     },
@@ -212,6 +252,11 @@
       "inherits": "macos"
     },
     {
+      "name": "macos-default-arm64",
+      "configurePreset": "macos-default-arm64",
+      "inherits": "macos"
+    },
+    {
       "name": "windows-packaging-release",
       "configurePreset": "windows-packaging-release",
       "inherits": "windows"
@@ -260,6 +305,11 @@
     {
       "name": "macos-default",
       "configurePreset": "macos-default",
+      "inherits": ["macos", "test-config"]
+    },
+    {
+      "name": "macos-default-arm64",
+      "configurePreset": "macos-default-arm64",
       "inherits": ["macos", "test-config"]
     },
     {
